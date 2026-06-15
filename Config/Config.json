@@ -1,0 +1,14 @@
+{
+    "current_language": "ru",
+    "current_theme": "light",
+    "data_directory": "Storage",
+    "earth_mu": 398600.4418,
+    "earth_radius": 6371.0,
+    "earth_rotation_rate": 7.292115e-05,
+    "font_family": "Segoe UI",
+    "font_size": 10,
+    "output_directory": "Output",
+    "storage_directory": "Storage",
+    "window_height": 800,
+    "window_width": 1200
+}

@@ -1,0 +1,38 @@
+{
+    "dark": {
+        "bg_primary": "#1e1e1e",
+        "bg_secondary": "#2d2d2d",
+        "bg_tertiary": "#3c3c3c",
+        "fg_primary": "#ffffff",
+        "fg_secondary": "#cccccc",
+        "accent": "#007acc",
+        "accent_hover": "#0098ff",
+        "error": "#f48771",
+        "success": "#6a9955",
+        "warning": "#dcdcaa",
+        "border": "#4d4d4d",
+        "button_bg": "#0e639c",
+        "button_fg": "#ffffff",
+        "entry_bg": "#3c3c3c",
+        "entry_fg": "#ffffff",
+        "select_bg": "#007acc"
+    },
+    "light": {
+        "bg_primary": "#f3f3f3",
+        "bg_secondary": "#ffffff",
+        "bg_tertiary": "#e8e8e8",
+        "fg_primary": "#333333",
+        "fg_secondary": "#666666",
+        "accent": "#0066b3",
+        "accent_hover": "#0088cc",
+        "error": "#d32f2f",
+        "success": "#388e3c",
+        "warning": "#f57c00",
+        "border": "#cccccc",
+        "button_bg": "#0078d4",
+        "button_fg": "#ffffff",
+        "entry_bg": "#ffffff",
+        "entry_fg": "#333333",
+        "select_bg": "#0078d4"
+    }
+}
