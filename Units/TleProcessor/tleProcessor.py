@@ -6,11 +6,6 @@ import math
 from Units.Common import common
 
 
-# _earth_mu = None
-# _earth_radius = None
-# _earth_rotation_rate = None
-
-
 def _days_since_epoch_get(tle_epoch_str, target_time):
     """
     Вычисление количества дней между эпохой TLE и целевым временем.

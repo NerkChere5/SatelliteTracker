@@ -1,7 +1,5 @@
 """Модуль для построения графических отчётов с использованием pandas и matplotlib."""
 
-
-# import numpy as np
 import os
 import pandas as pd
 import matplotlib.pyplot as plt

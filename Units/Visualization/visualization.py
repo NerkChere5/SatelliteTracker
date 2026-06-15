@@ -1,6 +1,7 @@
 """Модуль для визуализации траекторий спутников."""
 
 from datetime import datetime, timedelta
+from tkinter import messagebox
 import matplotlib.pyplot as plt
 
 from Units.TleProcessor import tleProcessor
@@ -29,6 +30,19 @@ def trajectory_build(satellite, duration_hours):
         duration_hours (float): Длительность в часах
     """
     if not satellite:
+        print("Ошибка: спутник не найден")
+        return
+
+    # Проверка наличия TLE данных
+    tle_line1 = satellite.get("tle_line1", "")
+    tle_line2 = satellite.get("tle_line2", "")
+
+    if not tle_line1 or not tle_line2:
+        print(f"Ошибка: отсутствуют TLE данные для спутника {satellite.get('name', 'Unknown')}")
+        messagebox.showerror(
+            localization_get("error_title", "Error"),
+            localization_get("error_no_tle", "No TLE data available for this satellite")
+        )
         return
 
     start_time = datetime.utcnow()
@@ -42,12 +56,40 @@ def trajectory_build(satellite, duration_hours):
         num_points=200
     )
 
-    if not positions:
-        print("Не удалось вычислить траекторию")
+    if not positions or len(positions) < 2:
+        print(f"Не удалось вычислить траекторию для {satellite.get('name', 'Unknown')}")
+        messagebox.showwarning(
+            localization_get("warning_title", "Warning"),
+            localization_get("warning_no_trajectory", "Cannot compute trajectory. Check TLE data.")
+        )
         return
 
     lons = [p[0] for p in positions]
     lats = [p[1] for p in positions]
+
+    # Проверка, не является ли траектория точкой
+    if max(lons) - min(lons) < 0.01 and max(lats) - min(lats) < 0.01:
+        print(f"Спутник {satellite.get('name', 'Unknown')} геостационарный - траектория - точка")
+        # Для геостационарных спутников показываем специальное сообщение
+        messagebox.showinfo(
+            localization_get("info_title", "Information"),
+            f"{satellite.get('name', 'Satellite')} is geostationary.\n"
+            f"Position: Lon={lons[0]:.2f}°, Lat={lats[0]:.2f}°"
+        )
+        # Всё равно показываем точку на карте
+        params = plt.subplots(figsize=(14, 8))
+        ax = params[1]
+        ax.plot(lons[0], lats[0], "bo", markersize=10, label=satellite.get('name', ''))
+        ax.set_xlim(-180, 180)
+        ax.set_ylim(-90, 90)
+        ax.grid(True, alpha=0.3)
+        ax.set_xlabel(localization_get("graph_x_longitude", "Longitude (degrees)"))
+        ax.set_ylabel(localization_get("graph_x_latitude", "Latitude (degrees)"))
+        ax.set_title(f"{satellite.get('name', '')} - Geostationary Satellite")
+        ax.legend()
+        plt.tight_layout()
+        plt.show()
+        return
 
     params = plt.subplots(figsize=(14, 8))
     ax = params[1]

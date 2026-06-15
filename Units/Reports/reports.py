@@ -1,6 +1,5 @@
 """Модуль для формирования текстовых отчётов с использованием pandas."""
 
-# from collections import Counter
 import os
 import pandas as pd
 
@@ -399,61 +398,3 @@ def year_distribution_build(satellites):
     report.append("=" * 60)
 
     return "\n".join(report)
-
-
-# def table_pivot_build(satellites, index_col, columns_col, values_col, aggfunc="count"):
-#     """
-#     Сводная таблица для пары качественных атрибутов.
-#     Использует pandas.pivot_table().
-
-#     Args:
-#         satellites (list): Список спутников
-#         index_col (str): Столбец для индекса
-#         columns_col (str): Столбец для колонок
-#         values_col (str): Столбец для значений
-#         aggfunc (str): Функция агрегации
-
-#     Returns:
-#         str: Текст отчёта
-#     """
-#     if not satellites:
-#         return "No data available"
-
-#     df = _satellites_dataframe_get(satellites)
-
-#     if index_col not in df.columns or columns_col not in df.columns:
-#         return f"Columns {index_col} or {columns_col} not found"
-
-#     # Удаление NaN значений
-#     if values_col in df.columns:
-#         df_clean = df[[index_col, columns_col, values_col]].dropna()
-#     else:
-#         df_clean = df[[index_col, columns_col]].dropna()
-
-#     if values_col in df.columns:
-#         pivot = pd.pivot_table(
-#             df_clean,
-#             values=values_col,
-#             index=index_col,
-#             columns=columns_col,
-#             aggfunc=aggfunc,
-#             fill_value=0,
-#         )
-#     else:
-#         # Если нет колонки значений, считаем количество
-#         pivot = pd.pivot_table(
-#             df_clean,
-#             index=index_col,
-#             columns=columns_col,
-#             aggfunc="size",
-#             fill_value=0,
-#         )
-
-#     report = []
-#     report.append("=" * 60)
-#     report.append(f"PIVOT TABLE: {index_col} vs {columns_col}")
-#     report.append("=" * 60)
-#     report.append("\n" + pivot.to_string())
-#     report.append("=" * 60)
-
-#     return "\n".join(report)

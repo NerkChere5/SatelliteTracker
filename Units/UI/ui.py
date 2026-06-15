@@ -321,33 +321,78 @@ def _report_export(report_type):
 
 
 def _satellite_delete(parent):
-    """Удаление выбранного спутника."""
+    """Удаление выбранных спутников"""
     # global _data_dir_path, _satellites_data
 
     if not hasattr(parent, "tree") or not parent.tree.selection():
         messagebox.showwarning(
             _language_get("warning_title", "Warning"),
-            _language_get("warning_select_delete", "Select a satellite to delete")
+            _language_get("warning_select_delete", "Select satellites to delete")
         )
         return
 
+    selected_items = parent.tree.selection()
+    num_selected = len(selected_items)
+
+    # Подтверждение удаления
+    if num_selected == 1:
+        confirm_msg = _language_get("dialog_confirm_delete", "Delete selected satellite?")
+    else:
+        confirm_msg = _language_get(
+            "dialog_confirm_delete_multiple", "Delete {count} selected satellites?"
+        ).format(count=num_selected)
+
     if not messagebox.askyesno(
         _language_get("confirmation_title", "Confirmation"),
-        _language_get("dialog_confirm_delete", "Delete selected satellite?")
+        confirm_msg
     ):
         return
 
-    selected = parent.tree.selection()[0]
-    values = parent.tree.item(selected, "values")
+    # Сбор NORAD ID всех выделенных спутников
+    norad_ids_to_delete = []
+    for item in selected_items:
+        values = parent.tree.item(item, "values")
+        norad_ids_to_delete.append(str(values[0]))
 
-    success = database.satellite_delete(_data_dir_path, values[0])
+    # Удаление каждого спутника
+    deleted_count = 0
+    for norad_id in norad_ids_to_delete:
+        success = database.satellite_delete(_data_dir_path, norad_id)
+        if success:
+            deleted_count += 1
 
-    if success:
+    if deleted_count > 0:
+        # Обновление локального списка данных
+        # global _satellites_data
         _satellites_data[:] = [
             s for s in _satellites_data
-            if str(s.get("norad_id")) != str(values[0])
+            if str(s.get("norad_id", "")) not in norad_ids_to_delete
         ]
         _satellites_table_refresh(parent)
+
+        # Сообщение об успешном удалении
+        if deleted_count == num_selected:
+            if deleted_count == 1:
+                msg = _language_get("success_deleted", "Satellite deleted successfully")
+            else:
+                msg = _language_get(
+                    "success_deleted_multiple", "{count} satellites deleted successfully"
+                ).format(count=deleted_count)
+        else:
+            msg = _language_get(
+                "success_deleted_partial", "Deleted {deleted} of {selected} satellites"
+            ).format(
+                deleted=deleted_count, selected=num_selected
+            )
+        messagebox.showinfo(
+            _language_get("info_title", "Information"),
+            msg
+        )
+    else:
+        messagebox.showerror(
+            _language_get("error_title", "Error"),
+            _language_get("error_delete_failed", "Failed to delete satellites")
+        )
 
 
 def _satellite_dialog_add(parent):

@@ -36,8 +36,8 @@ py main.py
 
 | Тип файла | Путь | Формат |
 |-----------|------|--------|
-| Основная база спутников | Storage/satellites.csv | CSV |
-| Бинарная резервная копия | Storage/dataSet_дата_время.pkl | Pickle |
+| База спутников | Storage/satellites.csv | CSV |
+| Бинарная база | Storage/dataSet_дата_время.pkl | Pickle |
 | Текстовые отчёты | Output/Reports/Report_тип_дата_время.txt | TXT |
 | Графики | Output/Graphics/Graphic_тип_дата_время.png | PNG |
 
