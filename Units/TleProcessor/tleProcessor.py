@@ -5,6 +5,11 @@ import math
 
 from Units.Common import common
 
+_earth_mu = 398600.4418
+_earth_radius = 6371.0
+_earth_rotation_rate = 7.292115e-5
+
+
 
 def _days_since_epoch_get(tle_epoch_str, target_time):
     """
